@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Grim's Silence Interrupted By</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" type="image/x-icon" href="resources/Avatar.png">
+        <link rel="stylesheet" href="grimstyle.css">
+        <script type="text/javascript">
+        
+            window.addEventListener(
+            "load",
+            (event) => {
+                createObserver();
+            },
+            false,
+            );
+        
+            // Initialise observer for checking if the elements are on screen.
+        
+            function createObserver() {
+                let observer;
+        
+                let options = {
+                    root: null,
+                    rootMargin: "0%",
+                    threshold: 0.5,
+                };
+                let fadeElement = document.querySelectorAll(".fadeinout");
+                observer = new IntersectionObserver(handleIntersect, options);
+                for(e of fadeElement) {
+                    observer.observe(e);
+                }
+            }
+        
+            // Handle elements gettting on or off screen.
+        
+            function handleIntersect(entries, observer) {
+                entries.forEach((entry) => {
+                    if(entry.target.classList.contains("fadeinout")){
+                        if(entry.isIntersecting){
+                            entry.target.style.opacity = 1;
+                        }
+                        else{
+                            entry.target.style.opacity = 0;
+                        }
+                    }
+                });
+            }
+        </script>
+	<script src="resources/silence_interrupted_by.js"></script>	
+    </head>
+    <body>
+        <div class="fadeinout" style="position:fixed; width:fit-content;"><h1><a href="index.html"><--</a></h1></div>
+        <div id="sizer" style="height: 100vh; width: 100vw;display: flex; flex-direction: column; justify-content: center; align-items: center;">
+        	<h1 class="fadeinout">Silence Interrupted By</h1>
+		<span>
+			<select id="sound_selector" onchange="playClickedSound(event)" multiple>
+			</select>
+			<input id="pause" type="button" value="Pause" onclick="pause()">
+		</span>
+		<input id="custom_sound" type="file" accept="audio/*" multiple>
+		<span>
+			<input type="button" value="Upload" onclick="uploadSounds()">
+			<input type="button" value="Clear Uploads" onclick="clearStorage()">
+		</span>
+		<p id="min time">Minimum Time: 0</p>
+		<input id="min" type="range" min="0" max="15" value="0.00" onchange="changeRange('min')" step="any">
+		<p id="max time">Maximum Time: 15</p>
+		<input id="max" type="range" min="0.01" max="60" value="15.00" onchange="changeRange('max')" step="any">
+		<p id="mean time">Mean Time: 10</p>
+		<input id="mean" type="range" min="0" max="60" value="10.00" onchange="changeRange('mean')" step="any">
+		<p id="stand time">Standard Deviation: 1.0</p>
+		<input id="stand" type="range" min="0.1" max="30.0" value="5.00" onchange="changeRange('stand')" step="any">
+        </div>
+    </body>
+</html>
